@@ -419,7 +419,9 @@ func (m Model) View() tea.View {
 		view += "\n" + lipgloss.Place(m.width, 0, lipgloss.Center, lipgloss.Center, overlay)
 	}
 
-	return tea.NewView(view)
+	v := tea.NewView(view)
+	v.AltScreen = true
+	return v
 }
 
 func (m Model) renderPortForward() string {
