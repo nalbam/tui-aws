@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	tea "charm.land/bubbletea/v2"
 	internalaws "tui-aws/internal/aws"
@@ -25,6 +26,16 @@ func main() {
 		if !r.OK {
 			fmt.Fprintf(os.Stderr, "ERROR: %s — %s\n", r.Name, r.Message)
 			os.Exit(1)
+		}
+	}
+
+	// Migrate config from old directory if needed
+	home, _ := os.UserHomeDir()
+	oldDir := filepath.Join(home, ".tui-ssm")
+	newDir := config.Dir()
+	if _, err := os.Stat(oldDir); err == nil {
+		if _, err := os.Stat(newDir); os.IsNotExist(err) {
+			os.Rename(oldDir, newDir)
 		}
 	}
 
