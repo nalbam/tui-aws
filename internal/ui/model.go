@@ -11,9 +11,9 @@ import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"golang.org/x/sys/unix"
-	internalaws "tui-ssm/internal/aws"
-	"tui-ssm/internal/config"
-	"tui-ssm/internal/store"
+	internalaws "tui-aws/internal/aws"
+	"tui-aws/internal/config"
+	"tui-aws/internal/store"
 )
 
 // ssmExecCmd wraps exec.Cmd to reset the terminal and flush the input

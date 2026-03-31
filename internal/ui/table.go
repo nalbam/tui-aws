@@ -6,8 +6,8 @@ import (
 
 	"charm.land/lipgloss/v2"
 	"github.com/charmbracelet/x/ansi"
-	"tui-ssm/internal/aws"
-	"tui-ssm/internal/store"
+	"tui-aws/internal/aws"
+	"tui-aws/internal/store"
 )
 
 type Column struct {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"tui-ssm/internal/aws"
+	"tui-aws/internal/aws"
 )
 
 type Action struct {

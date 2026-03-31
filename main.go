@@ -5,17 +5,17 @@ import (
 	"os"
 
 	tea "charm.land/bubbletea/v2"
-	internalaws "tui-ssm/internal/aws"
-	"tui-ssm/internal/config"
-	"tui-ssm/internal/store"
-	"tui-ssm/internal/ui"
+	internalaws "tui-aws/internal/aws"
+	"tui-aws/internal/config"
+	"tui-aws/internal/store"
+	"tui-aws/internal/ui"
 )
 
 var version = "dev"
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--version" {
-		fmt.Printf("tui-ssm %s\n", version)
+		fmt.Printf("tui-aws %s\n", version)
 		os.Exit(0)
 	}
 

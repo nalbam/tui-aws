@@ -3,8 +3,8 @@ package ui
 import (
 	"testing"
 
-	"tui-ssm/internal/aws"
-	"tui-ssm/internal/store"
+	"tui-aws/internal/aws"
+	"tui-aws/internal/store"
 )
 
 func TestSortInstances(t *testing.T) {
