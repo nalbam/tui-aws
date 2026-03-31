@@ -101,10 +101,24 @@ func RenderInstanceDetail(inst aws.Instance) string {
 		b.WriteString(fmt.Sprintf("  Public IP:  %s\n", inst.PublicIP))
 	}
 	if inst.VpcID != "" {
-		b.WriteString(fmt.Sprintf("  VPC:        %s\n", inst.VpcID))
+		vpcLabel := inst.VpcID
+		if inst.VpcName != "" {
+			vpcLabel = fmt.Sprintf("%s (%s)", inst.VpcName, inst.VpcID)
+		}
+		if inst.VpcCIDR != "" {
+			vpcLabel += "  " + inst.VpcCIDR
+		}
+		b.WriteString(fmt.Sprintf("  VPC:        %s\n", vpcLabel))
 	}
 	if inst.SubnetID != "" {
-		b.WriteString(fmt.Sprintf("  Subnet:     %s\n", inst.SubnetID))
+		subnetLabel := inst.SubnetID
+		if inst.SubnetName != "" {
+			subnetLabel = fmt.Sprintf("%s (%s)", inst.SubnetName, inst.SubnetID)
+		}
+		if inst.SubnetCIDR != "" {
+			subnetLabel += "  " + inst.SubnetCIDR
+		}
+		b.WriteString(fmt.Sprintf("  Subnet:     %s\n", subnetLabel))
 	}
 	b.WriteString(fmt.Sprintf("  Platform:   %s\n", inst.Platform))
 	b.WriteString(fmt.Sprintf("  Key Pair:   %s\n", inst.KeyPair))

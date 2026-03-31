@@ -601,6 +601,7 @@ func (m Model) loadInstances() tea.Cmd {
 			return instancesLoadedMsg{err: err}
 		}
 
+		internalaws.EnrichVpcSubnetInfo(ctx, clients.EC2, instances)
 		ssmStatus, _ := internalaws.FetchSSMStatus(ctx, clients.SSM)
 
 		return instancesLoadedMsg{
