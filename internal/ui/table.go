@@ -1,11 +1,11 @@
 package ui
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
 	"charm.land/lipgloss/v2"
+	"github.com/charmbracelet/x/ansi"
 	"tui-ssm/internal/aws"
 	"tui-ssm/internal/store"
 )
@@ -98,18 +98,23 @@ func renderRow(columns []Column, getText func(Column) string, styleFn func(Colum
 	var parts []string
 	for _, col := range columns {
 		val := getText(col)
-		// Truncate raw text (no ANSI codes yet)
-		if len(val) > col.Width {
-			val = val[:col.Width-1] + "…"
+		// Truncate using terminal cell width (handles wide chars like ★, ●, 한글)
+		w := lipgloss.Width(val)
+		if w > col.Width {
+			val = ansi.Truncate(val, col.Width-1, "…")
+			w = lipgloss.Width(val)
 		}
-		padded := fmt.Sprintf("%-*s", col.Width, val)
+		// Pad with spaces to fill column width (cell-width aware)
+		if pad := col.Width - w; pad > 0 {
+			val += strings.Repeat(" ", pad)
+		}
 		// Apply style after truncation/padding so ANSI codes don't break layout
 		if styleFn != nil {
 			if style := styleFn(col); style.GetForeground() != nil {
-				padded = style.Render(padded)
+				val = style.Render(val)
 			}
 		}
-		parts = append(parts, padded)
+		parts = append(parts, val)
 	}
 	return strings.Join(parts, " ")
 }
