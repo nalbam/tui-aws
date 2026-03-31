@@ -3,6 +3,8 @@ package ui
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -12,6 +14,28 @@ import (
 	"tui-ssm/internal/config"
 	"tui-ssm/internal/store"
 )
+
+// ssmExecCmd wraps exec.Cmd to reset the terminal after SSM session exits.
+// The session-manager-plugin alters terminal state (raw mode, PTY settings)
+// which can prevent Bubble Tea's RestoreTerminal from working correctly.
+type ssmExecCmd struct {
+	cmd *exec.Cmd
+}
+
+func (c *ssmExecCmd) Run() error {
+	err := c.cmd.Run()
+	// Reset terminal to a sane state before Bubble Tea tries to restore.
+	// This fixes the issue where SSM's session-manager-plugin leaves
+	// the terminal in a broken state after session exit.
+	reset := exec.Command("stty", "sane")
+	reset.Stdin = os.Stdin
+	reset.Run() //nolint:errcheck
+	return err
+}
+
+func (c *ssmExecCmd) SetStdin(r io.Reader)  { c.cmd.Stdin = r }
+func (c *ssmExecCmd) SetStdout(w io.Writer) { c.cmd.Stdout = w }
+func (c *ssmExecCmd) SetStderr(w io.Writer) { c.cmd.Stderr = w }
 
 // Messages
 type instancesLoadedMsg struct {
@@ -502,7 +526,7 @@ func (m Model) startSSMSession(inst internalaws.Instance) tea.Cmd {
 
 	args := internalaws.BuildSSMSessionArgs(inst.InstanceID, m.profile, m.region)
 	c := exec.Command("aws", args...)
-	return tea.ExecProcess(c, func(err error) tea.Msg {
+	return tea.Exec(&ssmExecCmd{cmd: c}, func(err error) tea.Msg {
 		return ssmSessionDoneMsg{err: err}
 	})
 }
@@ -518,7 +542,7 @@ func (m Model) startPortForward(inst internalaws.Instance) tea.Cmd {
 
 	args := internalaws.BuildPortForwardArgs(inst.InstanceID, m.profile, m.region, m.portForward.LocalPort, m.portForward.RemotePort)
 	c := exec.Command("aws", args...)
-	return tea.ExecProcess(c, func(err error) tea.Msg {
+	return tea.Exec(&ssmExecCmd{cmd: c}, func(err error) tea.Msg {
 		return ssmSessionDoneMsg{err: err}
 	})
 }
