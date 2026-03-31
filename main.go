@@ -63,19 +63,7 @@ func main() {
 	// Create and run TUI
 	model := ui.NewModel(cfg, profiles, favs, hist)
 	p := tea.NewProgram(model, tea.WithFilter(ui.InterruptFilter))
-	_, err = p.Run()
-
-	// Always log the exit reason
-	if f, ferr := os.OpenFile("/tmp/tui-ssm-debug.log", os.O_APPEND|os.O_WRONLY, 0o644); ferr == nil {
-		if err != nil {
-			fmt.Fprintf(f, "EXIT: p.Run() error: %v (type=%T)\n", err, err)
-		} else {
-			fmt.Fprintf(f, "EXIT: p.Run() returned nil (normal quit via QuitMsg or context cancel)\n")
-		}
-		f.Close()
-	}
-
-	if err != nil {
+	if _, err := p.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
