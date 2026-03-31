@@ -11,6 +11,7 @@ const (
 	ViewProfileSelect
 	ViewRegionSelect
 	ViewPortForward
+	ViewActionMenu
 )
 
 func RenderHelpBar(state ViewState, width int) string {
@@ -30,6 +31,12 @@ func RenderHelpBar(state ViewState, width int) string {
 	case ViewPortForward:
 		keys = helpLine(
 			"Enter", "Start",
+			"Esc", "Cancel",
+		)
+	case ViewActionMenu:
+		keys = helpLine(
+			"↑↓", "Navigate",
+			"Enter", "Select",
 			"Esc", "Cancel",
 		)
 	default:

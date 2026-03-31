@@ -104,6 +104,8 @@ type Model struct {
 	profSelect   SelectorModel
 	regionSelect SelectorModel
 	portForward  PortForwardModel
+	actionMenu   ActionMenuModel
+	showDetail   string // "sg" or "detail" for info overlays
 
 	// Layout
 	width  int
@@ -197,6 +199,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m.updateRegionSelect(msg)
 	case ViewPortForward:
 		return m.updatePortForward(msg)
+	case ViewActionMenu:
+		return m.updateActionMenu(msg)
 	default:
 		return m.updateTable(msg)
 	}
@@ -223,7 +227,8 @@ func (m Model) updateTable(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case "enter":
 		if m.cursor < len(m.filtered) {
-			return m, m.startSSMSession(m.filtered[m.cursor])
+			m.actionMenu = NewActionMenu(m.filtered[m.cursor])
+			m.viewState = ViewActionMenu
 		}
 
 	case "/":
@@ -430,6 +435,49 @@ func (m Model) updatePortForward(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+func (m Model) updateActionMenu(msg tea.Msg) (tea.Model, tea.Cmd) {
+	keyMsg, ok := msg.(tea.KeyPressMsg)
+	if !ok {
+		return m, nil
+	}
+
+	// If showing a detail overlay (sg/detail), any key closes it
+	if m.showDetail != "" {
+		m.showDetail = ""
+		m.viewState = ViewTable
+		m.actionMenu.Active = false
+		return m, nil
+	}
+
+	switch keyMsg.String() {
+	case "esc":
+		m.actionMenu.Active = false
+		m.viewState = ViewTable
+	case "up", "k":
+		m.actionMenu.MoveUp()
+	case "down", "j":
+		m.actionMenu.MoveDown()
+	case "enter":
+		action := m.actionMenu.Selected()
+		inst := m.actionMenu.Instance
+		switch action {
+		case "ssm":
+			m.actionMenu.Active = false
+			m.viewState = ViewTable
+			return m, m.startSSMSession(inst)
+		case "portfwd":
+			m.actionMenu.Active = false
+			m.viewState = ViewPortForward
+			m.portForward = PortForwardModel{Active: true, LocalPort: "8080", RemotePort: "80", Field: 0}
+		case "sg":
+			m.showDetail = "sg"
+		case "detail":
+			m.showDetail = "detail"
+		}
+	}
+	return m, nil
+}
+
 func (m Model) View() tea.View {
 	if m.width == 0 {
 		return tea.NewView("Loading...")
@@ -463,9 +511,15 @@ func (m Model) View() tea.View {
 		sections = append(sections, RenderTable(m.filtered, columns, m.cursor, m.favorites, m.history, m.profile, m.region, m.width, tableHeight))
 	}
 
-	// Overlay (filter / profile / region / port forward)
+	// Overlay (filter / profile / region / port forward / action menu)
 	overlay := ""
 	switch {
+	case m.showDetail == "sg" && m.actionMenu.Active:
+		overlay = RenderSecurityGroups(m.actionMenu.Instance)
+	case m.showDetail == "detail" && m.actionMenu.Active:
+		overlay = RenderInstanceDetail(m.actionMenu.Instance)
+	case m.actionMenu.Active:
+		overlay = m.actionMenu.Render(m.width)
 	case m.filter.Active:
 		overlay = m.filter.Render(m.width)
 	case m.profSelect.Active:
