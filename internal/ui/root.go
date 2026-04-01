@@ -258,16 +258,24 @@ func (m RootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.overlay = overlayRegionSelect
 			return m, nil
 
-		case "tab", "]":
-			// Troubleshoot tab uses Tab for field switching — delegate to tab
-			if keyMsg.String() == "tab" && m.tabIDs[m.activeTab] == shared.TabCheck {
-				break // fall through to tab delegation below
+		case "]":
+			next := (m.activeTab + 1) % len(m.tabs)
+			return m.switchTab(next)
+
+		case "[":
+			prev := (m.activeTab - 1 + len(m.tabs)) % len(m.tabs)
+			return m.switchTab(prev)
+
+		case "tab":
+			// Check tab uses Tab for field switching — delegate to tab
+			if m.tabIDs[m.activeTab] == shared.TabCheck {
+				break
 			}
 			next := (m.activeTab + 1) % len(m.tabs)
 			return m.switchTab(next)
 
-		case "shift+tab", "[":
-			if keyMsg.String() == "shift+tab" && m.tabIDs[m.activeTab] == shared.TabCheck {
+		case "shift+tab":
+			if m.tabIDs[m.activeTab] == shared.TabCheck {
 				break
 			}
 			prev := (m.activeTab - 1 + len(m.tabs)) % len(m.tabs)
