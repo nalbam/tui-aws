@@ -258,22 +258,16 @@ func (m RootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.overlay = overlayRegionSelect
 			return m, nil
 
-		case "1", "2", "3", "4", "5", "6", "7", "8", "9":
-			idx := int(keyMsg.String()[0] - '1')
-			if idx >= 0 && idx < len(m.tabs) {
-				return m.switchTab(idx)
-			}
-
-		case "tab":
+		case "tab", "]":
 			// Troubleshoot tab uses Tab for field switching — delegate to tab
-			if m.tabIDs[m.activeTab] == shared.TabCheck {
+			if keyMsg.String() == "tab" && m.tabIDs[m.activeTab] == shared.TabCheck {
 				break // fall through to tab delegation below
 			}
 			next := (m.activeTab + 1) % len(m.tabs)
 			return m.switchTab(next)
 
-		case "shift+tab":
-			if m.tabIDs[m.activeTab] == shared.TabCheck {
+		case "shift+tab", "[":
+			if keyMsg.String() == "shift+tab" && m.tabIDs[m.activeTab] == shared.TabCheck {
 				break
 			}
 			prev := (m.activeTab - 1 + len(m.tabs)) % len(m.tabs)
@@ -390,24 +384,22 @@ func (m RootModel) updateOverlay(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m RootModel) renderTabBar() string {
 	var parts []string
 	for i, id := range m.tabIDs {
-		num := fmt.Sprintf("%d", i+1)
 		name := id.Label()
 		if i == m.activeTab {
-			label := shared.TabActiveKeyStyle.Render(num) + " " + name
-			parts = append(parts, shared.TabActiveStyle.Render(label))
+			parts = append(parts, shared.TabActiveStyle.Render(name))
 		} else {
-			label := shared.TabInactiveKeyStyle.Render(num) + " " + name
-			parts = append(parts, shared.TabInactiveStyle.Render(label))
+			parts = append(parts, shared.TabInactiveStyle.Render(name))
 		}
 	}
 
-	// Profile/Region on the right
+	bar := strings.Join(parts, "")
+
+	// Profile/Region on the right (if space allows)
 	profile := shared.StatusKeyStyle.Render(" Profile:") + " " + m.shared.Profile
 	region := shared.StatusKeyStyle.Render(" Region:") + " " + m.shared.Region
 	right := "  " + profile + "  " + region
 
-	bar := strings.Join(parts, "") + right
-	return shared.TabBarStyle.Width(m.shared.Width).Render(bar)
+	return shared.TabBarStyle.Width(m.shared.Width).Render(bar + right)
 }
 
 func globalHelpLine() string {
@@ -415,7 +407,7 @@ func globalHelpLine() string {
 	pairs := [][2]string{
 		{"p", "Profile"},
 		{"r", "Region"},
-		{"1-8", "Tab"},
+		{"[/]", "Prev/Next Tab"},
 		{"q", "Quit"},
 	}
 	for _, p := range pairs {
