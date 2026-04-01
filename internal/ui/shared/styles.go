@@ -25,16 +25,23 @@ var (
 
 	// Tab bar
 	TabBarStyle = lipgloss.NewStyle().
-			Background(lipgloss.Color("#3c3836")).
-			Foreground(lipgloss.Color("#a89984")).
-			Padding(0, 1)
+			Background(lipgloss.Color("#282828")).
+			Padding(0, 0)
 
 	TabActiveStyle = lipgloss.NewStyle().
+			Background(lipgloss.Color("#458588")).
 			Foreground(lipgloss.Color("#ebdbb2")).
-			Bold(true)
+			Bold(true).
+			Padding(0, 1)
 
 	TabInactiveStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color("#928374"))
+				Background(lipgloss.Color("#3c3836")).
+				Foreground(lipgloss.Color("#a89984")).
+				Padding(0, 1)
+
+	TabKeyStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#fabd2f")).
+			Bold(true)
 
 	// Table
 	TableHeaderStyle = lipgloss.NewStyle().

@@ -342,14 +342,23 @@ func (m RootModel) updateOverlay(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m RootModel) renderTabBar() string {
 	var parts []string
 	for i, id := range m.tabIDs {
-		label := fmt.Sprintf(" %d:%s ", i+1, id.Label())
+		num := fmt.Sprintf("%d", i+1)
+		name := id.Label()
 		if i == m.activeTab {
+			label := shared.TabKeyStyle.Render(num) + " " + name
 			parts = append(parts, shared.TabActiveStyle.Render(label))
 		} else {
+			label := shared.TabKeyStyle.Render(num) + " " + name
 			parts = append(parts, shared.TabInactiveStyle.Render(label))
 		}
 	}
-	bar := strings.Join(parts, " ")
+
+	// Profile/Region on the right
+	profile := shared.StatusKeyStyle.Render("Profile:") + " " + m.shared.Profile
+	region := shared.StatusKeyStyle.Render("Region:") + " " + m.shared.Region
+	right := "  " + profile + "  " + region
+
+	bar := strings.Join(parts, "") + right
 	return shared.TabBarStyle.Width(m.shared.Width).Render(bar)
 }
 

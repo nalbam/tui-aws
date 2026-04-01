@@ -207,7 +207,13 @@ func (m *TroubleshootModel) ShortHelp() string {
 	case vsRAResult:
 		return helpLine("Esc", "Back to result")
 	default:
-		return helpLine("Tab", "Switch field", "Enter", "Pick/Check")
+		if m.field == fieldSource || m.field == fieldDest {
+			return helpLine("Tab/↑↓", "Field", "Enter", "Pick instance", "Esc", "Back")
+		}
+		if m.srcInst != nil && m.dstInst != nil {
+			return helpLine("Tab/↑↓", "Field", "Enter", "Check connectivity", "Esc", "Back")
+		}
+		return helpLine("Tab/↑↓", "Field", "Esc", "Back")
 	}
 }
 
