@@ -126,6 +126,7 @@ func (m *EC2Model) Update(msg tea.Msg, s *shared.SharedState) (shared.TabModel, 
 			m.err = msg.err
 			return m, nil
 		}
+		m.err = nil
 		m.instances = msg.instances
 		for i := range m.instances {
 			if msg.ssmStatus != nil {
