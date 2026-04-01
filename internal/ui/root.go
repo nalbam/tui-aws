@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	tea "charm.land/bubbletea/v2"
-	"golang.org/x/sys/unix"
 	internalaws "tui-aws/internal/aws"
 	"tui-aws/internal/config"
 	"tui-aws/internal/store"
@@ -54,10 +53,8 @@ func (c *ssmExecCmd) Run() error {
 	reset.Run() //nolint:errcheck
 
 	// 2. Flush the stdin input buffer to discard any residual bytes
-	//    left by the session-manager-plugin. Without this, stale escape
-	//    sequences can cause Bubble Tea's StreamEvents parser to error,
-	//    which sends to p.errs and terminates the event loop.
-	unix.IoctlSetInt(int(os.Stdin.Fd()), unix.TCFLSH, unix.TCIFLUSH) //nolint:errcheck
+	//    left by the session-manager-plugin.
+	flushStdin()
 
 	return err
 }
