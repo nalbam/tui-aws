@@ -13,11 +13,16 @@ import (
 	"tui-aws/internal/config"
 	"tui-aws/internal/store"
 	"tui-aws/internal/ui/shared"
+	"tui-aws/internal/ui/tab_asg"
+	"tui-aws/internal/ui/tab_cloudwatch"
+	"tui-aws/internal/ui/tab_ebs"
 	"tui-aws/internal/ui/tab_ec2"
 	"tui-aws/internal/ui/tab_elb"
+	"tui-aws/internal/ui/tab_iam"
 	"tui-aws/internal/ui/tab_routetable"
 	"tui-aws/internal/ui/tab_sg"
 	"tui-aws/internal/ui/tab_subnet"
+	"tui-aws/internal/ui/tab_tgw"
 	"tui-aws/internal/ui/tab_troubleshoot"
 	"tui-aws/internal/ui/tab_vpc"
 	"tui-aws/internal/ui/tab_vpce"
@@ -105,6 +110,10 @@ func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, h
 		switch id {
 		case shared.TabEC2:
 			tabs[i] = tab_ec2.New(cfg.Table.SortBy, cfg.Table.SortOrder)
+		case shared.TabASG:
+			tabs[i] = tab_asg.New()
+		case shared.TabEBS:
+			tabs[i] = tab_ebs.New()
 		case shared.TabVPC:
 			tabs[i] = tab_vpc.New()
 		case shared.TabSubnet:
@@ -115,8 +124,14 @@ func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, h
 			tabs[i] = tab_sg.New()
 		case shared.TabVPCEndpoint:
 			tabs[i] = tab_vpce.New()
+		case shared.TabTGW:
+			tabs[i] = tab_tgw.New()
 		case shared.TabELB:
 			tabs[i] = tab_elb.New()
+		case shared.TabCloudWatch:
+			tabs[i] = tab_cloudwatch.New()
+		case shared.TabIAM:
+			tabs[i] = tab_iam.New()
 		case shared.TabCheck:
 			tabs[i] = tab_troubleshoot.New()
 		default:

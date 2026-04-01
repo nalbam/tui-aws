@@ -5,9 +5,12 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	elb "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 )
@@ -18,6 +21,9 @@ type Clients struct {
 	STS     *sts.Client
 	ELBv2   *elbv2.Client // ALB, NLB, GWLB
 	ELB     *elb.Client   // Classic LB
+	ASG     *autoscaling.Client
+	CW      *cloudwatch.Client
+	IAM     *iam.Client
 	Profile string
 	Region  string
 }
@@ -42,6 +48,9 @@ func NewClients(ctx context.Context, profile, region string) (*Clients, error) {
 		STS:     sts.NewFromConfig(cfg),
 		ELBv2:   elbv2.NewFromConfig(cfg),
 		ELB:     elb.NewFromConfig(cfg),
+		ASG:     autoscaling.NewFromConfig(cfg),
+		CW:      cloudwatch.NewFromConfig(cfg),
+		IAM:     iam.NewFromConfig(cfg),
 		Profile: profile,
 		Region:  region,
 	}, nil
