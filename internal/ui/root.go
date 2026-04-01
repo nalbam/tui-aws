@@ -345,17 +345,17 @@ func (m RootModel) renderTabBar() string {
 		num := fmt.Sprintf("%d", i+1)
 		name := id.Label()
 		if i == m.activeTab {
-			label := shared.TabKeyStyle.Render(num) + " " + name
+			label := shared.TabActiveKeyStyle.Render(num) + " " + name
 			parts = append(parts, shared.TabActiveStyle.Render(label))
 		} else {
-			label := shared.TabKeyStyle.Render(num) + " " + name
+			label := shared.TabInactiveKeyStyle.Render(num) + " " + name
 			parts = append(parts, shared.TabInactiveStyle.Render(label))
 		}
 	}
 
 	// Profile/Region on the right
-	profile := shared.StatusKeyStyle.Render("Profile:") + " " + m.shared.Profile
-	region := shared.StatusKeyStyle.Render("Region:") + " " + m.shared.Region
+	profile := shared.StatusKeyStyle.Render(" Profile:") + " " + m.shared.Profile
+	region := shared.StatusKeyStyle.Render(" Region:") + " " + m.shared.Region
 	right := "  " + profile + "  " + region
 
 	bar := strings.Join(parts, "") + right
