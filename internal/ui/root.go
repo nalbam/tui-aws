@@ -264,7 +264,7 @@ func (m RootModel) View() tea.View {
 		overlay = m.regionSelect.Render(m.shared.Width)
 	}
 	if overlay != "" {
-		view += "\n" + shared.PlaceOverlay(m.shared.Width, overlay)
+		view = shared.PlaceOverlay(m.shared.Width, m.shared.Height, overlay)
 	}
 
 	v := tea.NewView(view)

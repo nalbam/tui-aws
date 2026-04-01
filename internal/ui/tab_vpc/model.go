@@ -242,7 +242,7 @@ func (m *VPCModel) View(s *shared.SharedState) string {
 
 	view := strings.Join(sections, "\n")
 	if overlay != "" {
-		view += "\n" + shared.PlaceOverlay(s.Width, overlay)
+		view = shared.PlaceOverlay(s.Width, s.Height, overlay)
 	}
 
 	return view
