@@ -1,0 +1,12 @@
+{
+  "languages": {
+    "go": {
+      "name": "gopls",
+      "command": "gopls",
+      "args": ["serve"],
+      "file_extensions": ["go"],
+      "project_patterns": ["go.mod"],
+      "exclude_patterns": ["**/vendor/**"]
+    }
+  }
+}

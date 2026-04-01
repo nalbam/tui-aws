@@ -10,6 +10,10 @@ A terminal UI for managing AWS EC2 instances, exploring VPC networking infrastru
 ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
+[![Demo Video](https://img.shields.io/badge/Demo-YouTube-red?logo=youtube)](https://youtu.be/78gfU_Vfluw)
+
+**[Watch Demo Video](https://youtu.be/78gfU_Vfluw)**
+
 ```
 ┌─ EC2 ASG EBS VPC Subnet Routes SG VPCE TGW ELB CF WAF ACM R53 RDS S3 ECS EKS Lambda CW IAM Check ─┐
 │ ★ ● web-server-1         i-0abc1234   running  10.0.1.10   t3.medium  2a                        │
