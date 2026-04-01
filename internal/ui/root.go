@@ -14,6 +14,7 @@ import (
 	"tui-aws/internal/store"
 	"tui-aws/internal/ui/shared"
 	"tui-aws/internal/ui/tab_ec2"
+	"tui-aws/internal/ui/tab_elb"
 	"tui-aws/internal/ui/tab_routetable"
 	"tui-aws/internal/ui/tab_sg"
 	"tui-aws/internal/ui/tab_subnet"
@@ -114,6 +115,8 @@ func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, h
 			tabs[i] = tab_sg.New()
 		case shared.TabVPCEndpoint:
 			tabs[i] = tab_vpce.New()
+		case shared.TabELB:
+			tabs[i] = tab_elb.New()
 		case shared.TabCheck:
 			tabs[i] = tab_troubleshoot.New()
 		default:
@@ -213,7 +216,7 @@ func (m RootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.overlay = overlayRegionSelect
 			return m, nil
 
-		case "1", "2", "3", "4", "5", "6", "7":
+		case "1", "2", "3", "4", "5", "6", "7", "8":
 			idx := int(keyMsg.String()[0] - '1')
 			if idx >= 0 && idx < len(m.tabs) {
 				return m.switchTab(idx)
@@ -370,7 +373,7 @@ func globalHelpLine() string {
 	pairs := [][2]string{
 		{"p", "Profile"},
 		{"r", "Region"},
-		{"1-7", "Tab"},
+		{"1-8", "Tab"},
 		{"q", "Quit"},
 	}
 	for _, p := range pairs {

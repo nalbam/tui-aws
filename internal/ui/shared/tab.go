@@ -24,6 +24,7 @@ const (
 	TabRoutes
 	TabSG
 	TabVPCEndpoint
+	TabELB
 	TabCheck
 )
 
@@ -42,6 +43,8 @@ func (t TabID) Label() string {
 		return "SG"
 	case TabVPCEndpoint:
 		return "VPCE"
+	case TabELB:
+		return "ELB"
 	case TabCheck:
 		return "Check"
 	default:
@@ -51,7 +54,7 @@ func (t TabID) Label() string {
 
 // AllTabs returns all tab IDs in display order.
 func AllTabs() []TabID {
-	return []TabID{TabEC2, TabVPC, TabSubnet, TabRoutes, TabSG, TabVPCEndpoint, TabCheck}
+	return []TabID{TabEC2, TabVPC, TabSubnet, TabRoutes, TabSG, TabVPCEndpoint, TabELB, TabCheck}
 }
 
 // NavigateToTab is a message that requests switching to a specific tab.
