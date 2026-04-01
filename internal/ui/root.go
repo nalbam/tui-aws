@@ -101,8 +101,8 @@ type RootModel struct {
 // NewRootModel creates the root model with all tabs.
 func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, hist *store.History) RootModel {
 	// Validate default profile exists in the parsed profiles list.
-	// If saved profile is not found, fallback to "(instance role)" which uses
-	// the default credential chain (works on EC2 or with env vars).
+	// If saved profile is not found, fallback to the first named profile
+	// (skip "(instance role)" which fails on non-EC2 machines like macOS).
 	profile := cfg.DefaultProfile
 	profileValid := false
 	for _, p := range profiles {
@@ -112,7 +112,14 @@ func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, h
 		}
 	}
 	if !profileValid {
-		profile = internalaws.InstanceRoleProfile
+		// Pick first named profile (not instance role)
+		profile = internalaws.InstanceRoleProfile // default fallback
+		for _, p := range profiles {
+			if p != internalaws.InstanceRoleProfile {
+				profile = p
+				break
+			}
+		}
 	}
 
 	s := shared.SharedState{
