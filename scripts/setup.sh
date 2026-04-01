@@ -4,7 +4,7 @@
 # Checks prerequisites, installs missing packages, builds and runs tui-aws.
 # Supports: macOS (arm64/amd64), Linux (arm64/amd64)
 #
-set -euo pipefail
+set -o pipefail
 
 # Colors
 RED='\033[0;31m'
@@ -185,17 +185,26 @@ step "3/5" "Checking Go..."
 
 GO_CMD=""
 find_go() {
+    # Check PATH first
+    local go_in_path=""
+    go_in_path="$(command -v go 2>/dev/null || true)"
+    if [[ -n "$go_in_path" && -x "$go_in_path" ]]; then
+        GO_CMD="$go_in_path"
+        return 0
+    fi
+
     # Check standard locations including Homebrew paths
-    for p in \
-        "$(command -v go 2>/dev/null)" \
-        "/usr/local/go/bin/go" \
-        "/opt/homebrew/bin/go" \
-        "/opt/homebrew/opt/go/bin/go" \
-        "$HOME/go-install/go/bin/go" \
-        "$HOME/.local/go/bin/go" \
-        "/usr/lib/go/bin/go" \
-        "/snap/bin/go"; do
-        if [[ -n "$p" && -x "$p" ]]; then
+    local candidates=(
+        "/usr/local/go/bin/go"
+        "/opt/homebrew/bin/go"
+        "/opt/homebrew/opt/go/bin/go"
+        "$HOME/go-install/go/bin/go"
+        "$HOME/.local/go/bin/go"
+        "/usr/lib/go/bin/go"
+        "/snap/bin/go"
+    )
+    for p in "${candidates[@]}"; do
+        if [[ -x "$p" ]]; then
             GO_CMD="$p"
             return 0
         fi
