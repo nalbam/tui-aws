@@ -208,10 +208,17 @@ func (m RootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "tab":
+			// Troubleshoot tab uses Tab for field switching — delegate to tab
+			if m.tabIDs[m.activeTab] == shared.TabCheck {
+				break // fall through to tab delegation below
+			}
 			next := (m.activeTab + 1) % len(m.tabs)
 			return m.switchTab(next)
 
 		case "shift+tab":
+			if m.tabIDs[m.activeTab] == shared.TabCheck {
+				break
+			}
 			prev := (m.activeTab - 1 + len(m.tabs)) % len(m.tabs)
 			return m.switchTab(prev)
 		}

@@ -214,10 +214,10 @@ func (m *TroubleshootModel) updateForm(msg tea.Msg, s *shared.SharedState) (shar
 	}
 
 	switch keyMsg.String() {
-	case "tab":
+	case "tab", "down", "j":
 		m.field = (m.field + 1) % 4
 
-	case "shift+tab":
+	case "shift+tab", "up", "k":
 		m.field = (m.field - 1 + 4) % 4
 
 	case "enter":
