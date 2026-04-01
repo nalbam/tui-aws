@@ -17,6 +17,7 @@ func DefaultColumns() []shared.Column {
 		{Key: "type", Title: "Type", Width: 8},
 		{Key: "size", Title: "Size", Width: 6},
 		{Key: "iops", Title: "IOPS", Width: 6},
+		{Key: "encrypted", Title: "Encrypted", Width: 5},
 		{Key: "attached", Title: "Attached To", Width: 20},
 		{Key: "az", Title: "AZ", Width: 5},
 	}
@@ -95,6 +96,11 @@ func cellValue(key string, v aws.Volume) string {
 		return fmt.Sprintf("%dGiB", v.Size)
 	case "iops":
 		return fmt.Sprintf("%d", v.IOPS)
+	case "encrypted":
+		if v.Encrypted {
+			return "✓"
+		}
+		return "✗"
 	case "attached":
 		if v.AttachedTo != "" {
 			return v.AttachedTo
@@ -115,6 +121,11 @@ func cellStyle(key string, v aws.Volume) lipgloss.Style {
 	switch key {
 	case "state":
 		return volumeStateStyle(v.State)
+	case "encrypted":
+		if v.Encrypted {
+			return shared.StateRunning // green
+		}
+		return shared.StateStopped // red
 	default:
 		return lipgloss.Style{}
 	}
