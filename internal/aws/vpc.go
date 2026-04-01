@@ -37,6 +37,12 @@ type TGWAttachment struct {
 type VPCEndpoint struct {
 	ID, Name, ServiceName, Type, State string
 	VpcID                              string
+	SubnetIDs                          []string
+	RouteTableIDs                      []string
+	SecurityGroupIDs                   []string
+	PrivateDNS                         bool
+	CreationTime                       string
+	NetworkInterfaceIDs                []string
 }
 
 type ElasticIP struct {
@@ -202,11 +208,21 @@ func FetchVPCEndpoints(ctx context.Context, client *ec2.Client) ([]VPCEndpoint, 
 		}
 		for _, ep := range page.VpcEndpoints {
 			e := VPCEndpoint{
-				ID:          aws.ToString(ep.VpcEndpointId),
-				ServiceName: aws.ToString(ep.ServiceName),
-				Type:        string(ep.VpcEndpointType),
-				State:       string(ep.State),
-				VpcID:       aws.ToString(ep.VpcId),
+				ID:                  aws.ToString(ep.VpcEndpointId),
+				ServiceName:         aws.ToString(ep.ServiceName),
+				Type:                string(ep.VpcEndpointType),
+				State:               string(ep.State),
+				VpcID:               aws.ToString(ep.VpcId),
+				SubnetIDs:           ep.SubnetIds,
+				RouteTableIDs:       ep.RouteTableIds,
+				NetworkInterfaceIDs: ep.NetworkInterfaceIds,
+				PrivateDNS:          aws.ToBool(ep.PrivateDnsEnabled),
+			}
+			for _, g := range ep.Groups {
+				e.SecurityGroupIDs = append(e.SecurityGroupIDs, aws.ToString(g.GroupId))
+			}
+			if ep.CreationTimestamp != nil {
+				e.CreationTime = ep.CreationTimestamp.Format("2006-01-02 15:04")
 			}
 			for _, tag := range ep.Tags {
 				if aws.ToString(tag.Key) == "Name" {

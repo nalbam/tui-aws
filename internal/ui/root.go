@@ -19,6 +19,7 @@ import (
 	"tui-aws/internal/ui/tab_subnet"
 	"tui-aws/internal/ui/tab_troubleshoot"
 	"tui-aws/internal/ui/tab_vpc"
+	"tui-aws/internal/ui/tab_vpce"
 )
 
 // ssmExecCmd wraps exec.Cmd to reset the terminal and flush the input
@@ -111,6 +112,8 @@ func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, h
 			tabs[i] = tab_routetable.New()
 		case shared.TabSG:
 			tabs[i] = tab_sg.New()
+		case shared.TabVPCEndpoint:
+			tabs[i] = tab_vpce.New()
 		case shared.TabCheck:
 			tabs[i] = tab_troubleshoot.New()
 		default:
@@ -210,7 +213,7 @@ func (m RootModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.overlay = overlayRegionSelect
 			return m, nil
 
-		case "1", "2", "3", "4", "5", "6":
+		case "1", "2", "3", "4", "5", "6", "7":
 			idx := int(keyMsg.String()[0] - '1')
 			if idx >= 0 && idx < len(m.tabs) {
 				return m.switchTab(idx)
@@ -367,7 +370,7 @@ func globalHelpLine() string {
 	pairs := [][2]string{
 		{"p", "Profile"},
 		{"r", "Region"},
-		{"1-6", "Tab"},
+		{"1-7", "Tab"},
 		{"q", "Quit"},
 	}
 	for _, p := range pairs {
