@@ -15,6 +15,7 @@ type EKSCluster struct {
 	Version          string
 	Status           string
 	Endpoint         string
+	CACertData       string // base64-encoded CA certificate
 	VpcID            string
 	SubnetIDs        []string
 	SecurityGroupIDs []string
@@ -63,6 +64,10 @@ func FetchEKSClusters(ctx context.Context, client *eks.Client) ([]EKSCluster, er
 			Status:          string(c.Status),
 			Endpoint:        awssdk.ToString(c.Endpoint),
 			PlatformVersion: awssdk.ToString(c.PlatformVersion),
+		}
+
+		if c.CertificateAuthority != nil {
+			cluster.CACertData = awssdk.ToString(c.CertificateAuthority.Data)
 		}
 
 		if c.ResourcesVpcConfig != nil {
