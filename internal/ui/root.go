@@ -100,8 +100,23 @@ type RootModel struct {
 
 // NewRootModel creates the root model with all tabs.
 func NewRootModel(cfg config.Config, profiles []string, favs *store.Favorites, hist *store.History) RootModel {
+	// Validate that default profile exists; fallback to first available profile
+	profile := cfg.DefaultProfile
+	if len(profiles) > 0 {
+		found := false
+		for _, p := range profiles {
+			if p == profile {
+				found = true
+				break
+			}
+		}
+		if !found {
+			profile = profiles[0]
+		}
+	}
+
 	s := shared.SharedState{
-		Profile:   cfg.DefaultProfile,
+		Profile:   profile,
 		Region:    cfg.DefaultRegion,
 		Profiles:  profiles,
 		Cfg:       cfg,
