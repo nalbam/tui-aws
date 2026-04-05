@@ -1,7 +1,7 @@
 # Architecture
 
 ## System Overview
-tui-aws is a single-binary Go CLI providing a 22-tab terminal UI for comprehensive AWS infrastructure management. Built on Bubble Tea v2 (Elm architecture: Model-View-Update) with a tab-based architecture separating concerns into independent submodels. 104 source files, ~23,000 lines of code.
+tui-aws is a single-binary Go CLI providing a 22-tab terminal UI for comprehensive AWS infrastructure management. Built on Bubble Tea v2 (Elm architecture: Model-View-Update) with a tab-based architecture separating concerns into independent submodels. 107 source files, ~23,000 lines of code.
 
 ## Tab Architecture
 
@@ -57,6 +57,7 @@ RootModel (tea.Model)
 | **config** | `internal/config/` | User preferences (`~/.tui-aws/config.json`) |
 | **store** | `internal/store/` | Favorites & session history persistence |
 | **ui/root** | `internal/ui/root.go` | RootModel: tab switching, global keys, SSM exec, ECS exec, InterruptFilter |
+| **ui/flush** | `internal/ui/flush_linux.go`, `flush_other.go` | Platform-specific stdin flush (TCIFLUSH on Linux, no-op on macOS) via build tags |
 | **ui/shared** | `internal/ui/shared/` | TabModel interface, SharedState, styles, table renderer, selector, overlay |
 | **ui/tab_ec2** | `internal/ui/tab_ec2/` | EC2 tab: list, actions, search, filter, SSM, port forward, Network Path |
 | **ui/tab_asg** | `internal/ui/tab_asg/` | ASG tab: groups, scaling policies, instances |

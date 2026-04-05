@@ -6,7 +6,7 @@
 
 A terminal UI for managing AWS EC2 instances, exploring VPC networking infrastructure, and troubleshooting connectivity — all from your terminal.
 
-![Go](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go&logoColor=white)
+![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Linux-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 

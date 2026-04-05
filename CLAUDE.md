@@ -1,7 +1,7 @@
 # Project Context
 
 ## Overview
-tui-aws — AWS 인프라 전체를 터미널에서 탐색, 관리, 트러블슈팅하는 Go TUI 도구. 22개 탭, 104개 소스 파일, ~23,000 lines of code.
+tui-aws — AWS 인프라 전체를 터미널에서 탐색, 관리, 트러블슈팅하는 Go TUI 도구. 22개 탭, 107개 소스 파일, ~23,000 lines of code.
 
 ## Tech Stack
 - **Language:** Go 1.25
@@ -77,7 +77,11 @@ internal/
     tab_iam/                     IAM: users, groups, policies, last used
     tab_troubleshoot/            Check: connectivity checker + Reachability Analyzer
 docs/                            Architecture docs, ADRs, runbooks, specs
-.claude/                         Claude settings, hooks, skills
+.claude/                         Claude settings, hooks, skills, commands, agents
+  hooks/                         Event-driven shell scripts (6 hooks)
+  skills/                        Reusable review/release workflows (4 skills)
+  commands/                      Slash commands (/review, /test-all, /deploy)
+  agents/                        Subagent configs (code-reviewer, security-auditor)
 ```
 
 ## Conventions
@@ -94,6 +98,9 @@ docs/                            Architecture docs, ADRs, runbooks, specs
 - **Cell-width aware:** `lipgloss.Width()` + `ansi.Truncate()` for Unicode/emoji columns
 - **ExpandNameColumn:** Name column fills remaining terminal width (min 20, max 60)
 - **Deep-dive tabs:** ECS and EKS use hierarchical drill-down (cluster > service > task > container)
+- **Platform-specific builds:** `flush_linux.go` (TCIFLUSH) / `flush_other.go` (no-op) use Go build tags for cross-platform stdin flush
+- **Error handling in tabs:** each tab model carries `loading bool` and `err error` fields; API errors display in the table area via `shared.ErrorStyle`; `detailLoading` gates async detail overlays
+- **Standard tab pattern:** most tabs follow 4-state viewState (table → search → actionMenu → detail) with ActionMenuModel for cursor-based action selection
 - Test files colocated: `*_test.go` alongside implementation
 - JSON config/store files under `~/.tui-aws/`
 

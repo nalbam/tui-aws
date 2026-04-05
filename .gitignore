@@ -1,3 +1,6 @@
 tui-aws
 dist/
 /tmp/tui-aws-debug.log
+.env
+settings.local.json
+*.log
