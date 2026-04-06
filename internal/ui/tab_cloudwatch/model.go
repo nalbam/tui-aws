@@ -208,6 +208,10 @@ func (m *CloudWatchModel) ShortHelp() string {
 	}
 }
 
+func (m *CloudWatchModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *CloudWatchModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

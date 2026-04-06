@@ -211,6 +211,10 @@ func (m *IAMModel) ShortHelp() string {
 	}
 }
 
+func (m *IAMModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *IAMModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

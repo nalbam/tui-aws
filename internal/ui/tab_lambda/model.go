@@ -208,6 +208,10 @@ func (m *LambdaModel) ShortHelp() string {
 	}
 }
 
+func (m *LambdaModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *LambdaModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

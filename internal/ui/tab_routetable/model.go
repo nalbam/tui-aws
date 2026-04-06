@@ -262,6 +262,10 @@ func (m *RouteTableModel) ShortHelp() string {
 	}
 }
 
+func (m *RouteTableModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *RouteTableModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

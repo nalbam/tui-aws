@@ -352,6 +352,10 @@ func (m *ECSModel) ShortHelp() string {
 	}
 }
 
+func (m *ECSModel) IsEditing() bool {
+	return m.viewState == vsClusterSearch
+}
+
 // --- Update handlers ---
 
 func (m *ECSModel) updateClusterList(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

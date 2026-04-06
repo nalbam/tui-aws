@@ -291,6 +291,10 @@ func (m *ELBModel) ShortHelp() string {
 	}
 }
 
+func (m *ELBModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *ELBModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

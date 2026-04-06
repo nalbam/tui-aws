@@ -237,6 +237,10 @@ func (m *WAFModel) ShortHelp() string {
 	}
 }
 
+func (m *WAFModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *WAFModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

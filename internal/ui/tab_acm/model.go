@@ -237,6 +237,10 @@ func (m *ACMModel) ShortHelp() string {
 	}
 }
 
+func (m *ACMModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *ACMModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

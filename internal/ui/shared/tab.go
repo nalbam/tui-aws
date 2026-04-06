@@ -12,6 +12,10 @@ type TabModel interface {
 	Update(msg tea.Msg, shared *SharedState) (TabModel, tea.Cmd)
 	View(shared *SharedState) string
 	ShortHelp() string
+	// IsEditing returns true when the tab is in a text input mode
+	// (e.g. search, filter, port forward input). RootModel uses this
+	// to suppress global shortcut keys so characters reach the tab.
+	IsEditing() bool
 }
 
 // TabID identifies a tab in the tab bar.

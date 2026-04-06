@@ -256,6 +256,10 @@ func (m *R53Model) ShortHelp() string {
 	}
 }
 
+func (m *R53Model) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *R53Model) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

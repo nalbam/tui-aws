@@ -208,6 +208,10 @@ func (m *RDSModel) ShortHelp() string {
 	}
 }
 
+func (m *RDSModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *RDSModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

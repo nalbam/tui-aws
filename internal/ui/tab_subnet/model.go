@@ -259,6 +259,10 @@ func (m *SubnetModel) ShortHelp() string {
 	}
 }
 
+func (m *SubnetModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *SubnetModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

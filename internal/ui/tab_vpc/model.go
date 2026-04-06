@@ -261,6 +261,10 @@ func (m *VPCModel) ShortHelp() string {
 	}
 }
 
+func (m *VPCModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *VPCModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

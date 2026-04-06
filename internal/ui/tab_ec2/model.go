@@ -268,6 +268,10 @@ func (m *EC2Model) ShortHelp() string {
 	}
 }
 
+func (m *EC2Model) IsEditing() bool {
+	return m.viewState == vsSearch || m.viewState == vsPortForward
+}
+
 // --- Internal update handlers ---
 
 func (m *EC2Model) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

@@ -400,6 +400,10 @@ func (m *EKSModel) ShortHelp() string {
 	}
 }
 
+func (m *EKSModel) IsEditing() bool {
+	return m.viewState == vsClusterSearch
+}
+
 // --- Update handlers ---
 
 func (m *EKSModel) updateClusterList(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

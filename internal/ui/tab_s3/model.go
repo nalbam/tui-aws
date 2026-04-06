@@ -236,6 +236,10 @@ func (m *S3Model) ShortHelp() string {
 	}
 }
 
+func (m *S3Model) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *S3Model) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

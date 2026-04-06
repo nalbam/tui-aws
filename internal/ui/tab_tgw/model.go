@@ -238,6 +238,10 @@ func (m *TGWModel) ShortHelp() string {
 	}
 }
 
+func (m *TGWModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 func (m *TGWModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {
 	keyMsg, ok := msg.(tea.KeyPressMsg)
 	if !ok {

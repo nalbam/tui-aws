@@ -237,6 +237,10 @@ func (m *CloudFrontModel) ShortHelp() string {
 	}
 }
 
+func (m *CloudFrontModel) IsEditing() bool {
+	return m.viewState == vsSearch
+}
+
 // --- Internal update handlers ---
 
 func (m *CloudFrontModel) updateTable(msg tea.Msg, s *shared.SharedState) (shared.TabModel, tea.Cmd) {

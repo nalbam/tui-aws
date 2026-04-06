@@ -38,3 +38,7 @@ func (p *PlaceholderTab) View(s *shared.SharedState) string {
 func (p *PlaceholderTab) ShortHelp() string {
 	return ""
 }
+
+func (p *PlaceholderTab) IsEditing() bool {
+	return false
+}
