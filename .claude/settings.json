@@ -15,17 +15,6 @@
         ]
       }
     ],
-    "PreCommit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/secret-scan.sh 2>/dev/null || true"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
@@ -52,6 +41,10 @@
       {
         "matcher": "",
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/secret-scan.sh 2>/dev/null || true"
+          },
           {
             "type": "command",
             "command": "bash .claude/hooks/auto-commit.sh 2>/dev/null || true"
