@@ -13,6 +13,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add ADR-005: scope expansion from tui-ssm to full AWS infrastructure TUI
+- Add ADR-006: ECS container log retrieval via CloudWatch Logs instead of ECS API
+- Add release/distribution runbook for cross-compiled binary workflow
+
+### Fixed
+
+- Fix invalid `PreCommit` hook key in `.claude/settings.json` — moved secret scan to `Stop` hook (runs before auto-commit)
+
+### Changed
+
+- Add `make install` to CLAUDE.md and README project structure documentation
+
 ## [0.1.0] - 2026-04-05
 
 ### Added
@@ -56,6 +70,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html)을 따릅니다.
 
 ## [Unreleased]
+
+### Added
+
+- ADR-005 추가: tui-ssm에서 전체 AWS 인프라 TUI로의 스코프 확장 결정 기록
+- ADR-006 추가: ECS 컨테이너 로그를 ECS API 대신 CloudWatch Logs로 조회하는 결정 기록
+- 크로스 컴파일 바이너리 워크플로우를 위한 릴리즈/배포 런북 추가
+
+### Fixed
+
+- `.claude/settings.json`의 잘못된 `PreCommit` 훅 키 수정 — secret scan을 `Stop` 훅으로 이동 (auto-commit 전에 실행)
+
+### Changed
+
+- CLAUDE.md 및 README 프로젝트 구조 문서에 `make install` 추가
 
 ## [0.1.0] - 2026-04-05
 

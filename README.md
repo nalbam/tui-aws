@@ -239,7 +239,7 @@ All config files are stored in `~/.tui-aws/` (created automatically on first run
 ```
 tui-aws/
 ├── main.go                          # Entry point, config migration, TUI launch
-├── Makefile                         # Build targets (build, build-all, test, clean)
+├── Makefile                         # Build targets (build, build-all, install, test, clean)
 ├── scripts/
 │   └── setup.sh                     # Cross-platform setup and install script
 ├── internal/
@@ -673,7 +673,7 @@ ls dist/
 ```
 tui-aws/
 ├── main.go                          # 진입점, 설정 마이그레이션, TUI 실행
-├── Makefile                         # 빌드 타겟 (build, build-all, test, clean)
+├── Makefile                         # 빌드 타겟 (build, build-all, install, test, clean)
 ├── scripts/
 │   └── setup.sh                     # 크로스 플랫폼 설치 스크립트
 ├── internal/
