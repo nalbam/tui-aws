@@ -108,6 +108,7 @@ docs/                            Architecture docs, ADRs, runbooks, specs
 ```bash
 make build          # Build binary (tui-aws)
 make build-all      # Cross-compile for all platforms
+make install        # Install to $GOPATH/bin
 make test           # Run all tests (go test ./... -v)
 make clean          # Remove build artifacts
 go vet ./...        # Static analysis
